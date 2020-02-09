@@ -8,6 +8,11 @@ const messageContentInput = addMessageForm.querySelector('.text-input');
 let userName;
 let messageContent;
 
+const socket = io();
+
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
+
 // LOGIN
 function login (userName) {
   loginFrom.classList.remove('show');
@@ -30,6 +35,18 @@ function addMessage(author, content) {
   messagesList.appendChild(message);
 }
 
+function sendMessage(userName, messageContent) {
+  event.preventDefault();
+  messageContent = messageContentInput.value;
+  userName = userNameInput.value;
+  if(messageContent.length){
+    addMessage(userName, messageContent);
+    socket.emit('message', { author: userName, content: messageContent });
+  }
+  else window.alert('Type message');
+  messageContentInput.value = '';
+}
+
 // EVENT LISTNERS
 
 loginFrom.addEventListener('submit', (event) =>{
@@ -40,10 +57,5 @@ loginFrom.addEventListener('submit', (event) =>{
 });
 
 messagesSection.addEventListener('submit', (event) =>{
-  event.preventDefault();
-  messageContent = messageContentInput.value;
-  userName = userNameInput.value;
-  if(messageContent.length) addMessage(userName, messageContent);
-  else window.alert('Type message');
-  messageContentInput.value = '';
+  sendMessage(userName, messageContent);
 });
