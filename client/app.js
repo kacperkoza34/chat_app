@@ -51,6 +51,7 @@ function sendMessage(userName, messageContent) {
 
 loginFrom.addEventListener('submit', (event) =>{
   userName = userNameInput.value;
+  socket.emit('login', { author: userName });
   event.preventDefault();
   if(userName.length) login(userName);
   else window.alert('Type your name!');
