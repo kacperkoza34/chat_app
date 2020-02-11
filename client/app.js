@@ -48,10 +48,10 @@ function sendMessage(userName, messageContent) {
 }
 
 // EVENT LISTNERS
-
 loginFrom.addEventListener('submit', (event) =>{
   userName = userNameInput.value;
   socket.emit('login', { author: userName });
+  messageContent = [];
   event.preventDefault();
   if(userName.length) login(userName);
   else window.alert('Type your name!');
